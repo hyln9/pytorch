@@ -684,7 +684,11 @@ class GraphLowering(torch.fx.Interpreter):
                     for target in n.target.args[0].targets:
                         if (
                             target.fns[0]
-                            is torch.ops.mkldnn._convolution_pointwise.default
+                            in [
+                                torch.ops.mkldnn._convolution_pointwise.default,
+                                torch.ops.mkldnn._convolution_pointwise.binary,
+                                torch.ops.mkldnn._convolution_pointwise_.binary,
+                                ]
                         ):
                             conv_nodes.append(n)
                             break
@@ -893,7 +897,11 @@ class GraphLowering(torch.fx.Interpreter):
                 and isinstance(n.target, functools.partial)
             ):
                 for target in n.target.args[0].targets:
-                    if target.fns[0] is torch.ops.mkldnn._convolution_pointwise.default:
+                    if target.fns[0] in [
+                                torch.ops.mkldnn._convolution_pointwise.default,
+                                torch.ops.mkldnn._convolution_pointwise.binary,
+                                torch.ops.mkldnn._convolution_pointwise_.binary,
+                                ]:
                         output_set.add(n)
                         if last_conv is None:
                             last_conv = n

@@ -39,7 +39,6 @@ from torch.testing._internal.common_utils import (
     TEST_MKL,
     xfailIfS390X,
 )
-from torch.testing._internal.common_device_type import dtypes
 from torch.utils._python_dispatch import TorchDispatchMode
 
 
